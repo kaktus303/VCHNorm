@@ -88,17 +88,35 @@ public class Main {
         Matrix B = new Matrix(A.getSize());
         Vector b = new Vector(A.getSize());
         B1.equal(A);
+        Matrix prom = new Matrix(B1.getSize());
         Matrix Hes = new Matrix(A.getSize());
         Vector w = new Vector(B1.getSize()-1);
         Vector a = new Vector(B1.getSize()-1);
-        Vector u = new Vect
+        Vector u = new Vector(a.getSize(), 0);
 
             for(int j = 0;j<a.getSize();++j)
             {
                 a.setElement(j,B1.getElemnt(j+1,1));
             }
             System.out.println(a);
-
+            u.setElement(0,a.norm());
+        System.out.println(u);
+        Hes.equal(B1.sumMatrix(new Matrix(a.getSize(),1), a.uut(a,a).multOnScal(2/(a.utu(a,a)))));
+        for(int i = 0;i<prom.getSize();++i)
+        {
+            for (int j = 0;j<prom.getSize();++j)
+            {
+                if(i == 0 || j ==0)
+                {
+                    prom.setElement(i,j,0);
+                }
+                else
+                {
+                    prom.setElement(i,j,Hes.getElemnt(i-1,j-1));
+                }
+                Hes.setElement(0,0,B1.getElemnt(0,0));
+            }
+        }
         int numberStep = 0;
         while (true)
         {
@@ -391,18 +409,18 @@ public class Main {
         System.out.println(QR(A,iterations));
         Vector eiginevalues = QR(A,iterations);
 
-        System.out.println("метод наскорейшего градиентного спуска: \n");
-        System.out.println(fallDawn(A,answers,iterations));
-        System.out.println("Невязка: \n");
-        System.out.println("'''"+A.multOnVector(fallDawn(A,answers,iterations)).sumVector(answers.multOnScal(-1.0)
-        ).norm());
-        System.out.println("Метод сопряженных градиентов: \n");
-        System.out.println(conjugateGradient(A,answers,iterations));
-        System.out.println("Невязка: \n");
-        System.out.println("'''"+A.multOnVector(conjugateGradient(A,answers,iterations)).sumVector(answers.multOnScal(-1.0)
-        ).norm());
-        System.out.println("Холесский: \n");
-        System.out.println(holess(A,answers));
+//        System.out.println("метод наскорейшего градиентного спуска: \n");
+//        System.out.println(fallDawn(A,answers,iterations));
+//        System.out.println("Невязка: \n");
+//        System.out.println("'''"+A.multOnVector(fallDawn(A,answers,iterations)).sumVector(answers.multOnScal(-1.0)
+//        ).norm());
+//        System.out.println("Метод сопряженных градиентов: \n");
+//        System.out.println(conjugateGradient(A,answers,iterations));
+//        System.out.println("Невязка: \n");
+//        System.out.println("'''"+A.multOnVector(conjugateGradient(A,answers,iterations)).sumVector(answers.multOnScal(-1.0)
+//        ).norm());
+//        System.out.println("Холесский: \n");
+//        System.out.println(holess(A,answers));
                 //        System.out.println(A);
 
 //        System.out.println(Gilbert1.sumMatrix(A,

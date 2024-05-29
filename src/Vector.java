@@ -111,6 +111,27 @@ public class Vector {
         }
         return min;
     }
+    public double utu(Vector a,Vector b)
+    {
+        double answer = 0;
+        for(int i = 0;i<a.getSize();i++)
+        {
+            answer+=a.getElement(i)*b.getElement(i);
+        }
+        return answer;
+    }
+    public Matrix uut(Vector a,Vector b)
+    {
+        Matrix answer = new Matrix(a.getSize());
+        for(int i = 0;i<a.getSize();i++)
+        {
+            for(int j = 0;j< a.getSize();++j)
+            {
+                answer.setElement(i,j,a.getElement(i)*b.getElement(j));
+            }
+        }
+        return answer;
+    }
 
 
     @Override
