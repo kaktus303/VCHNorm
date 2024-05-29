@@ -88,7 +88,17 @@ public class Main {
         Matrix B = new Matrix(A.getSize());
         Vector b = new Vector(A.getSize());
         B1.equal(A);
-        Vector u = new
+        Matrix Hes = new Matrix(A.getSize());
+        Vector w = new Vector(B1.getSize()-1);
+        Vector a = new Vector(B1.getSize()-1);
+        Vector u = new Vect
+
+            for(int j = 0;j<a.getSize();++j)
+            {
+                a.setElement(j,B1.getElemnt(j+1,1));
+            }
+            System.out.println(a);
+
         int numberStep = 0;
         while (true)
         {
