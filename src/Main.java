@@ -89,19 +89,23 @@ public class Main {
         Vector b = new Vector(A.getSize());
         B1.equal(A);
         Matrix prom = new Matrix(B1.getSize());
-        Matrix Hes = new Matrix(A.getSize());
+        Matrix Hes = new Matrix(A.getSize()-1);
         Vector w = new Vector(B1.getSize()-1);
         Vector a = new Vector(B1.getSize()-1);
         Vector u = new Vector(a.getSize(), 0);
 
             for(int j = 0;j<a.getSize();++j)
             {
-                a.setElement(j,B1.getElemnt(j+1,1));
+                a.setElement(j,B1.getElemnt(j+1,0));
             }
             System.out.println(a);
             u.setElement(0,a.norm());
+            u.equal(a.sumVector(u));
         System.out.println(u);
-        Hes.equal(B1.sumMatrix(new Matrix(a.getSize(),1), a.uut(a,a).multOnScal(2/(a.utu(a,a)))));
+        System.out.println(a.uut(u,u).multOnScal(2));
+        Hes.equal(B1.sumMatrix(new Matrix(a.getSize(),1),
+                a.uut(u,u).multOnScal(-2/(a.utu(u,u)))));
+        System.out.println(Hes);
         for(int i = 0;i<prom.getSize();++i)
         {
             for (int j = 0;j<prom.getSize();++j)
@@ -114,9 +118,16 @@ public class Main {
                 {
                     prom.setElement(i,j,Hes.getElemnt(i-1,j-1));
                 }
-                Hes.setElement(0,0,B1.getElemnt(0,0));
+
             }
+
         }
+        prom.setElement(0,0,1);
+        System.out.println(B1);
+        B1.equal(prom.multMatrix(B1.multMatrix(prom.transposition())));
+        System.out.println(prom);
+        System.out.println(prom.transposition());
+        System.out.println(B1);
         int numberStep = 0;
         while (true)
         {
@@ -328,11 +339,22 @@ public class Main {
         return x;
     }
     public static void main(String[] args) {
-        int n =15, k = 13;
+        int n =7, k = 13;
         DecimalFormat df = new DecimalFormat("0.000000000000000E0");
         double iterations = 0.0000001;
         double time,timeall=0;
         double[] vector_massive = new double[n];
+        double[] massive = new double[]{5,-2,2,4-3,4,3,-6,7};
+        Matrix test = new Matrix(3,1);
+        test.setElement(0,0,5);
+        test.setElement(0,1,-2);
+        test.setElement(0,2,2);
+        test.setElement(1,0,4);
+        test.setElement(1,1,-3);
+        test.setElement(1,2,4);
+        test.setElement(2,0,3);
+        test.setElement(2,1,-6);
+        test.setElement(2,2,7);
         for(int i = 0;i<n;++i)
         {
             vector_massive[i] = Math.pow(-1.0,i);
@@ -402,12 +424,17 @@ public class Main {
 //        System.out.println(yacobi(A,iterations).sumVector(QR(A,iterations).multOnScal(-1)).norm());
 //        System.out.println("***************************************************************");
 //        System.out.println(holess(A,answers));
+
+
+
         System.out.println(A);
         System.out.println("Собсьвенные значения вычесленные методом Якоби :\n");
         System.out.println(yacobi(A,iterations));
         System.out.println("Собсьвенные значения вычесленные методом QR :\n");
         System.out.println(QR(A,iterations));
-        Vector eiginevalues = QR(A,iterations);
+        //Vector eiginevalues = QR(A,iterations);
+
+
 
 //        System.out.println("метод наскорейшего градиентного спуска: \n");
 //        System.out.println(fallDawn(A,answers,iterations));
@@ -433,6 +460,9 @@ public class Main {
 //        //System.out.println(rollingMethod(A.sumMatrix(new Matrix(n,3),new Matrix(n,1).multOnScal(-1*eiginevalues.getElement(1))),new Vector(n,0)));
 //        System.out.println((A.sumMatrix(new Matrix(n,3),new Matrix(n,1).multOnScal(-1*eiginevalues.getElement(1)))));
 
+
+//        System.out.println(test);
+//        System.out.println(QR(test,iterations));
 
 
     }
